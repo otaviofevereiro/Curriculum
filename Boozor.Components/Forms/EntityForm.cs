@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -177,6 +178,8 @@ namespace Boozor.Components.Forms
 
                 if (response.IsSuccessStatusCode)
                 {
+                    string a = await response.Content.ReadAsStringAsync();
+
                     result = await response.Content.ReadFromJsonAsync<Result<TEntity>>();
 
                     if (result.IsValid)
@@ -195,7 +198,7 @@ namespace Boozor.Components.Forms
 
         private async Task GetEntity(int entityId)
         {
-            var response = await Execute(() => Client.GetAsync($"{RequestUri}\\{entityId}"));
+            var response = await Execute(() => Client.GetAsync($"{RequestUri}/{entityId}"));
 
             if (!response.IsSuccessStatusCode &&
                 response.StatusCode == HttpStatusCode.NotFound)
